@@ -12,7 +12,16 @@ import java.util.List;
 
 public class UserDaoJDBCImpl extends Util implements UserDao {
     public UserDaoJDBCImpl() {
+    }
 
+    Connection connection;
+
+    {
+        try {
+            connection = getConnection();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void createUsersTable() {
@@ -51,13 +60,10 @@ public class UserDaoJDBCImpl extends Util implements UserDao {
 
     public void saveUser(String name, String lastName, byte age) {
         try (Statement statement = connection.createStatement()) {
-            try {
-                String SQL = "INSERT INTO users VALUES( id ,'" + name + "','" + lastName + "','" + age + "')";
-                statement.executeUpdate(SQL);
-                System.out.println("User с именем — " + name + " добавлен в базу данных");
-            } catch (RuntimeException e) {
-                System.out.println("Отсутствует таблица для добавления User-а");
-            }
+
+            String SQL = "INSERT INTO users VALUES( id ,'" + name + "','" + lastName + "','" + age + "')";
+            statement.executeUpdate(SQL);
+            System.out.println("User с именем — " + name + " добавлен в базу данных");
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -65,12 +71,8 @@ public class UserDaoJDBCImpl extends Util implements UserDao {
 
     public void removeUserById(long id) {
         try (Statement statement = connection.createStatement()) {
-            try {
-                String SQL = "DELETE fROM users where id";
-                statement.executeUpdate(SQL);
-            } catch (SQLException e) {
-                System.out.println("User не сущетвует");
-            }
+            String SQL = "DELETE fROM users where id";
+            statement.executeUpdate(SQL);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -87,7 +89,6 @@ public class UserDaoJDBCImpl extends Util implements UserDao {
                 user.setName(resultSet.getString("name"));
                 user.setLastName(resultSet.getString("lastname"));
                 user.setAge(resultSet.getByte("age"));
-
                 users.add(user);
             }
 
