@@ -2,38 +2,40 @@ package jm.task.core.jdbc;
 
 import jm.task.core.jdbc.dao.UserDao;
 import jm.task.core.jdbc.dao.UserDaoJDBCImpl;
+import jm.task.core.jdbc.service.UserService;
+import jm.task.core.jdbc.service.UserServiceImpl;
 
 
 public class Main {
     public static void main(String[] args) {
         // реализуйте алгоритм здесь
 
-        UserDao userDao = new UserDaoJDBCImpl();
-        userDao.createUsersTable();
+        UserService userService = new UserServiceImpl();
+        userService.createUsersTable();
 
-        userDao.saveUser("Вася", "Васильев", (byte) 22);
-        userDao.saveUser("Оля", "Морозова", (byte) 34);
-        userDao.saveUser("Иван", "Буча", (byte) 52);
-        userDao.saveUser("Олег", "Разумов", (byte) 22);
+        userService.saveUser("Вася", "Васильев", (byte) 22);
+        userService.saveUser("Оля", "Морозова", (byte) 34);
+        userService.saveUser("Иван", "Буча", (byte) 52);
+        userService.saveUser("Олег", "Разумов", (byte) 22);
 
-        for (int i = 0; i < userDao.getAllUsers().size(); i++) {
-            System.out.println(userDao.getAllUsers().get(i));
+        for (int i = 0; i < userService.getAllUsers().size(); i++) {
+            System.out.println(userService.getAllUsers().get(i));
 
         }
 
-        while (!userDao.getAllUsers().isEmpty()) {
-            for (int i = 0; i < userDao.getAllUsers().size(); i++) {
-                Long id = userDao.getAllUsers().get(i).getId();
-                userDao.removeUserById(id);
+        while (!userService.getAllUsers().isEmpty()) {
+            for (int i = 0; i < userService.getAllUsers().size(); i++) {
+                Long id = userService.getAllUsers().get(i).getId();
+                userService.removeUserById(id);
             }
         }
-        userDao.dropUsersTable();
+        userService.dropUsersTable();
 
 
-//        UserDao userDao = new UserDaoJDBCImpl();
-//        userDao.dropUsersTable();
-//        userDao.createUsersTable();
-//        userDao.saveUser("Вася", "Васильев", (byte) 22);
-//        System.out.println(userDao.getAllUsers().get(0));
+//        UserDao userService = new UserDaoJDBCImpl();
+//        userService.dropUsersTable();
+//        userService.createUsersTable();
+//        userService.saveUser("Вася", "Васильев", (byte) 22);
+//        System.out.println(userService.getAllUsers().get(0));
     }
 }
