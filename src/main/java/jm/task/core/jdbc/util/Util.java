@@ -11,14 +11,13 @@ public class Util {
     private static final String user = "Mrangel";
     private static final String password = "root";
 
-    public Connection getConnection() throws SQLException {
+    private Util() {
+    }
+
+    public static Connection getConnection() throws SQLException {
         Connection connection = null;
         connection = DriverManager.getConnection(bdSrc, user, password);
         return connection;
     }
-
-
 }
-
-
 
