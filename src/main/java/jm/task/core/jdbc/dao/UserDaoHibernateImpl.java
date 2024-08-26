@@ -1,18 +1,27 @@
 package jm.task.core.jdbc.dao;
 
 import jm.task.core.jdbc.model.User;
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
 
 import java.util.List;
+
+import static jm.task.core.jdbc.util.Util.getSession;
 
 public class UserDaoHibernateImpl implements UserDao {
     public UserDaoHibernateImpl() {
 
     }
 
+    final Session session = getSession();
 
     @Override
     public void createUsersTable() {
+        try (session) {
 
+        } catch (HibernateException e) {
+            throw new HibernateException(e);
+        }
     }
 
     @Override
