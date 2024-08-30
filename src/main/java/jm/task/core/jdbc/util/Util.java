@@ -15,7 +15,7 @@ public class Util {
 
     static {
         sessionFactory = configuration.buildSessionFactory();
-        session = sessionFactory.getCurrentSession();
+        session = sessionFactory.openSession();
     }
 
     private Util() {
@@ -30,7 +30,7 @@ public class Util {
 
     public static Session getSession() {
         if (session == null || !session.isOpen()) {
-            return getSessionFactory().getCurrentSession();
+            return getSessionFactory().openSession();
         }
         return session;
     }

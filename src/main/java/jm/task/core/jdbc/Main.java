@@ -1,6 +1,7 @@
 package jm.task.core.jdbc;
 
 import jm.task.core.jdbc.model.User;
+import jm.task.core.jdbc.service.UserService;
 import jm.task.core.jdbc.service.UserServiceImpl;
 
 import static jm.task.core.jdbc.util.Util.getSessionFactory;
@@ -9,7 +10,7 @@ import static jm.task.core.jdbc.util.Util.getSessionFactory;
 public class Main {
     public static void main(String[] args) {
         // реализуйте алгоритм здесь
-        UserServiceImpl userService = new UserServiceImpl();
+        UserService userService = new UserServiceImpl();
 
         try {
             userService.createUsersTable();
@@ -24,10 +25,7 @@ public class Main {
                 System.out.println(user);
             }
 
-            userService.removeUserById(1);
-            userService.removeUserById(2);
-            userService.removeUserById(3);
-            userService.removeUserById(4);
+            userService.cleanUsersTable();
 
             userService.dropUsersTable();
 

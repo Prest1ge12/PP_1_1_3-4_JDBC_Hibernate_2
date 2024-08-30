@@ -5,13 +5,18 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static jm.task.core.jdbc.util.Util.getSession;
 
 public class UserDaoHibernateImpl implements UserDao {
 
-    public UserDaoHibernateImpl() {
+    private UserDaoHibernateImpl() {
+    }
+
+    public static UserDaoHibernateImpl getUserDaoHibernateImplInstance() {
+        return new UserDaoHibernateImpl();
     }
 
     @Override
@@ -88,18 +93,13 @@ public class UserDaoHibernateImpl implements UserDao {
 
     @Override
     public List<User> getAllUsers() {
-        List<User> users;
-        Transaction transaction = null;
+        List<User> users = new ArrayList<>();
         try (Session session = getSession()) {
-            transaction = session.beginTransaction();
             users = session.createQuery("FROM User", User.class).getResultList();
-            session.getTransaction().commit();
+            System.out.println("Users: " + users);
         } catch (HibernateException e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
+            e.printStackTrace();
             System.out.println("Ошибка получения пользователей!");
-            return null;
         }
         return users;
     }
@@ -109,9 +109,7 @@ public class UserDaoHibernateImpl implements UserDao {
         Transaction transaction = null;
         try (Session session = getSession()) {
             transaction = session.beginTransaction();
-            for (User user : session.createQuery("FROM User", User.class).getResultList()) {
-                session.delete(user);
-            }
+            session.createQuery("DELETE FROM User").executeUpdate();
             session.getTransaction().commit();
         } catch (HibernateException e) {
             if (transaction != null) {
